@@ -1,70 +1,88 @@
 {
-	"description": "项目配置文件。",
-	"setting": {
-		"urlCheck": false,
-		"es6": true,
-		"postcss": true,
-		"preloadBackgroundData": false,
-		"minified": true,
-		"newFeature": true,
-		"coverView": true,
-		"autoAudits": false,
-		"showShadowRootInWxmlPanel": true,
-		"scopeDataCheck": false,
-		"checkInvalidKey": true,
-		"checkSiteMap": true,
-		"uploadWithSourceMap": true,
-		"babelSetting": {
-			"ignore": [],
-			"disablePlugins": [],
-			"outputPath": ""
-		}
-	},
-	"compileType": "miniprogram",
-	"libVersion": "1.7.2",
-	"appid": "wx973de56fdfded86b",
-	"projectname": "%E6%92%AD%E6%94%BE%E5%99%A8",
-	"simulatorType": "wechat",
-	"simulatorPluginLibVersion": {},
-	"condition": {
-		"search": {
-			"current": -1,
-			"list": []
-		},
-		"conversation": {
-			"current": -1,
-			"list": []
-		},
-		"miniprogram": {
-			"current": 1,
-			"list": [
-				{
-					"id": -1,
-					"name": "二维码",
-					"pathName": "pages/index/index",
-					"query": "",
-					"scene": "1011"
-				},
-				{
-					"id": -1,
-					"name": "进入播放页面",
-					"pathName": "pages/player/player",
-					"query": "name=1",
-					"scene": "1011"
-				},
-				{
-					"id": -1,
-					"name": "进入我的",
-					"pathName": "pages/my/my",
-					"query": ""
-				},
-				{
-					"id": -1,
-					"name": "进入搜索页面",
-					"pathName": "pages/search/search",
-					"query": ""
-				}
-			]
-		}
-	}
+  "description": "项目配置文件。",
+  "setting": {
+    "urlCheck": false,
+    "es6": true,
+    "enhance": false,
+    "postcss": true,
+    "preloadBackgroundData": false,
+    "minified": true,
+    "newFeature": true,
+    "coverView": true,
+    "nodeModules": false,
+    "autoAudits": false,
+    "showShadowRootInWxmlPanel": true,
+    "scopeDataCheck": false,
+    "uglifyFileName": false,
+    "checkInvalidKey": true,
+    "checkSiteMap": true,
+    "uploadWithSourceMap": true,
+    "compileHotReLoad": false,
+    "useMultiFrameRuntime": false,
+    "useApiHook": true,
+    "babelSetting": {
+      "ignore": [],
+      "disablePlugins": [],
+      "outputPath": ""
+    },
+    "enableEngineNative": false,
+    "useIsolateContext": true,
+    "useCompilerModule": true,
+    "userConfirmedUseCompilerModuleSwitch": false,
+    "packNpmManually": false,
+    "packNpmRelationList": [],
+    "minifyWXSS": true
+  },
+  "compileType": "miniprogram",
+  "libVersion": "1.7.2",
+  "appid": "wx693312f83f255cf3",
+  "projectname": "%E6%92%AD%E6%94%BE%E5%99%A8",
+  "simulatorType": "wechat",
+  "simulatorPluginLibVersion": {},
+  "condition": {
+    "plugin": {
+      "list": []
+    },
+    "game": {
+      "list": []
+    },
+    "gamePlugin": {
+      "list": []
+    },
+    "miniprogram": {
+      "list": [
+        {
+          "id": -1,
+          "name": "二维码",
+          "pathName": "pages/index/index",
+          "query": "",
+          "scene": "1011"
+        },
+        {
+          "id": -1,
+          "name": "进入播放页面",
+          "pathName": "pages/player/player",
+          "query": "name=1",
+          "scene": "1011"
+        },
+        {
+          "id": -1,
+          "name": "进入我的",
+          "pathName": "pages/my/my",
+          "query": ""
+        },
+        {
+          "id": -1,
+          "name": "进入搜索页面",
+          "pathName": "pages/search/search",
+          "query": ""
+        },
+        {
+          "name": "pages/player/player",
+          "pathName": "pages/player/player",
+          "scene": null
+        }
+      ]
+    }
+  }
 }

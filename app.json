@@ -12,7 +12,7 @@
   "window": {
     "backgroundTextStyle": "dark",
     "navigationBarBackgroundColor": "#222",
-    "navigationBarTitleText": "乐听Music",
+    "navigationBarTitleText": "一起听歌吧",
     "navigationBarTextStyle": "white"
   },
   "tabBar": {
@@ -48,5 +48,8 @@
     ]
   },
   "sitemapLocation": "sitemap.json",
-  "requiredBackgroundModes": ["audio", "location"]
+  "requiredBackgroundModes": [
+    "audio",
+    "location"
+  ]
 }

@@ -1,18 +1,70 @@
 <view>
-  <view class="player" v-show="playlist.length>0">
+  <scroll-view class="container" scroll-y hidden="{{!showHouses}}">
+    <view class="hot-list">
+    <!-- <view class="list-title">听歌房</view> -->
+    <view class="rank" ref="rank">
+      <view :data="houseList" class="toplist" ref="houseList">
+        <view>
+          <view bindtap="_selectItemRank" data-data="{{item}}" class="item" wx:for="{{houseList}}">
+            <view class="icon">
+              <image lazy-load width="100" height="100" wx:if="{{item.needPwd}}" src="/static/image/lock.png"/>
+              <image lazy-load width="100" height="100" wx:else src="/static/image/unlock.png"/>
+            </view>
+            <view class="songlist" style="{{houseId == item.id?'box-shadow:0px 0px 6px 1px white;':''}}">
+              <view class="song">
+                <text>[{{item.population}}]{{item.name}}</text>
+              </view>
+              <view class="desc">
+                <text>{{item.desc}}</text>
+              </view>
+            </view>
+          </view>
+        </view>
+        <view class="loading-container" wx:if="{{!houseList}}">
+          <loading></loading>
+        </view>
+      </view>
+    </view>
+  </view>
+  <block wx:if="{{isShowConfirm}}">
+      <view class='toast-box'>
+        <view class='toastbg'></view>
+        <view class='showToast'>
+            <view class='toast-title'>
+                <text>房间密码</text>
+            </view>
+            <view class='toast-main'>
+                <view class='toast-input'>
+                    <input type='password' placeholder='请输入房间密码' value="{{inputPwd}}" bindinput='setValue'></input>
+                </view>
+            </view>
+            <view class='toast-button'>
+                <view class='button1'>
+                    <button catchtap='cancel'>取消</button>
+                </view>
+                <view class='button2'>
+                    <button data-url="../allOrder/allOrder" catchtap='confirmAcceptance'>确定</button>
+                </view>
+            </view>
+        </view>
+    </view>
+     </block>
+
+  </scroll-view>
+  <view hidden="{{showHouses}}" class="player" v-show="currentSong">
     <view class="normal-player" wx:if="fullScreen">
       <view class="background">
-        <image src="{{currentSong.image}}" style="width: 100%"/>
+        <image src="{{currentSong.pictureUrl}}" style="width: 100%"/>
       </view>
       <view class="top">
         <view class="title">{{currentSong.name || '暂无正在播放歌曲'}}</view>
-        <view class="subtitle">{{currentSong.singer}}</view>
+        <view class="subtitle">{{currentSong.artist}}</view>
       </view>
       <swiper class="middle" style="height: 700rpx" bindchange="changeDot">
         <swiper-item class="middle-l" style="overflow: visible">
           <view class="cd-wrapper" ref="cdWrapper">
             <view class="cd {{cdCls}}">
-              <image src="{{currentSong.image}}" alt="" class="image"/>
+              <image src="{{currentSong.pictureUrl}}" alt="" class="image"/>
             </view>
           </view>
           <view class="currentLyricWrapper">{{currentText}}</view>
@@ -43,20 +95,27 @@
           </view>
           <text class="time time-r">{{duration}}</text>
         </view>
+
         <view class="operators">
+        
           <view class="icon i-left">
+            <i class="iconfont  icon-61" bindtap="getHouses"></i>
+          </view>
+          <view class="icon i-left">
+            <i class="iconfont  icon-dian" bindtap="getHouses"></i>
+          </view>
+          <!-- <view class="icon i-left">
             <i bindtap="changeMod"
                class="{{playMod==1? 'icon-sequence':''}}{{playMod==2? ' icon-random':''}}{{playMod==3?' icon-loop':''}}"></i>
-          </view>
-          <view class="icon i-left">
-            <i class="icon-prev" bindtap="prev"></i>
-          </view>
+          </view> -->
+        
           <view class="icon i-center">
             <i class="{{playIcon}}" bindtap="togglePlaying"></i>
           </view>
           <view class="icon i-right">
             <i class="icon-next" bindtap="next"></i>
           </view>
+      
           <view class="icon i-right" bindtap="openList">
             <i class="icon-playlist"></i>
           </view>
@@ -68,12 +127,15 @@
       <view class="play-content">
         <view class="plyer-list-title">播放队列({{songslist.length}}首)</view>
         <scroll-view class="playlist-wrapper" scroll-y scroll-into-view="list{{currentIndex}}">
-          <view class="item {{index==currentIndex ? 'playing':''}}" wx:for="{{songslist}}" id="list{{index}}"
-                data-index="{{index}}" bindtap="playthis" wx:key="{{index}}">
+          <view class="item {{index==0 ? 'playing':''}}" wx:for="{{songslist}}" id="list{{index}}"
+                data-index="{{index}}" data-id="{{item.id}}" bindtap="playthis" wx:key="index">
             <view class="name">{{item.name}}</view>
             <view class="play_list__line">-</view>
-            <view class="singer">{{item.singer}}</view>
-            <image class="playing-img" wx:if="{{index==currentIndex}}" src="./playing.gif"/>
+            <view class="singer">{{item.artist}}</view>
+            <view class="play_list__line">-</view>
+            <view class="picker">{{item.nickName}}</view>
+
+            <image class="playing-img" wx:if="{{index==0}}" src="./playing.gif"/>
           </view>
         </scroll-view>
         <view class="close-playlist" bindtap="close">关闭</view>

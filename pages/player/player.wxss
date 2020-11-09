@@ -177,8 +177,8 @@
     position: relative;
     height: 90rpx;
     line-height: 90rpx;
-    margin-left: 30rpx;
-    padding-right: 30rpx;
+    margin-left: 3rpx;
+    padding-right: 3rpx;
     border-bottom: 1rpx dashed rgba(255,255,255,.3);
 }
 .playlist-wrapper .playing ,.playlist-wrapper .playing .singer, .playlist-wrapper .playing .play_list__line{
@@ -198,12 +198,20 @@
     color: rgba(255,255,255,.5);
 }
 .playlist-wrapper .item .singer {
-    max-width:200rpx;
+    max-width:300rpx;
     overflow:hidden;
     white-space:nowrap;
     text-overflow:ellipsis;
     font-size: 12px;
     color: rgba(255,255,255,.5);
+}
+.playlist-wrapper .item .picker {
+    max-width:300rpx;
+    overflow:hidden;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+    font-size: 13px;
+    color: rgba(228, 210, 210, 0.5);
 }
 .playlist-wrapper .item .playing-img {
     width: 24rpx;
@@ -278,7 +286,7 @@
 .text{
     line-height: 32px;
     color: rgba(255, 255, 255, 0.5);
-    font-size: 14px;
+    font-size: 13px;
 }
 .current {
     color: #ffcd32;
@@ -313,6 +321,162 @@
 .dots-wrapper .current {
     width: 40rpx;
     background: rgba(255,255,255,.8);
+}
+.rank{
+    margin-bottom:10px;
+}
+.rank .toplist {
+    height: 100%;
+    overflow: hidden;
+  }
+  .hot-list .list-title {
+    height: 35px;
+    line-height: 35px;
+    text-align: center;
+    font-size: 14px;
+    color: #ffcd32;
+    text-align: center;
+    width: 100%;
+  }
+  .rank .toplist .item {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    margin: 0 10px;
+    padding-top: 20px;
+    height: 50px;
+  }
+  .rank .toplist .item .icon image {
+    width: 100rpx;
+    height: 100rpx;
+  }
+  .rank .toplist .item .icon {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 50px;
+    flex: 0 0 50px;
+    width: 50px;
+    height: 50px;
+    padding-right: 0;
+  }
+  .rank .toplist .item .songlist {
+    -webkit-box-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    padding: 0 20px;
+    height: 50px;
+    overflow: hidden;
+    background: #333;
+    color: rgba(255,255,255,0.3);
+    font-size: 12px;
+  }
+  .rank .toplist .item .songlist .song {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    line-height: 26px;
+    color:#a1acc2;
+    font-size: 14px;
+  }
+  .rank .toplist .item .songlist .desc {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap; 
+    line-height: 26px;
+  }
+  .container{
+      height:100vh;
+  }
+  
+.toast-box {
+    width: 100%;
+    height: 100%;
+    opacity: 1;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+}
+ 
+ 
+.toastbg {
+    opacity: 0.2;
+    background-color: black;
+    position: absolute;
+    width: 100%;
+    min-height: 100vh;
+}
+ 
+.showToast {
+    position: absolute;
+    opacity: 1;
+    width: 70%;
+    margin-left: 15%;
+    margin-top: 40%;
+}
+ 
+.toast-title {
+    padding-left: 5%;
+    background-color: #4d92cb;
+    color: white;
+    padding-top: 2vh;
+    padding-bottom: 2vh;
+    border-top-right-radius: 16rpx;
+    border-top-left-radius: 16rpx;
+}
+ 
+.toast-main {
+    padding-top: 2vh;
+    padding-bottom: 2vh;
+    background-color: white;
+    color:black;
+    text-align: center;
+}
+ 
+.toast-input {
+    margin-left: 5%;
+    margin-right: 5%;
+    border: 1px solid #ddd;
+    padding-left: 2vh;
+    padding-right: 2vh;
+    padding-top: 1vh;
+    padding-bottom: 1vh;
+}
+ 
+.toast-button {
+    display: flex;
+}
+ 
+.button1 {
+    width: 50%;
+}
+ 
+.button2 {
+    width: 50%;
+}
+ 
+.button1 button {
+    width: 100%;
+    background-color: white;
+    color: red;
+    border-radius: 0px;
+    border-bottom-left-radius: 16rpx;
+}
+ 
+.button2 button{
+    width: 100%;
+    background-color: white;
+    color: black;
+    border-radius: 0px;
+    border-bottom-right-radius: 16rpx;
 }
 
 

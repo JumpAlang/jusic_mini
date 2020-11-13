@@ -13,20 +13,32 @@ Component({
     }
   },
   ready: function () {
-    wx.createSelectorQuery().in(this).select('#progressBar').boundingClientRect(function (rect) {
-      rect.width   // 节点的宽度
-    }).exec((res) => {
-      this.setData({
-        barWidth: res[0].width
-      })
-    })
+    // wx.createSelectorQuery().in(this).select('#progressBar').boundingClientRect(function (rect) {
+    //   rect.width   // 节点的宽度
+    // }).exec((res) => {
+    //   this.setData({
+    //     barWidth: res[0].width
+    //   })
+    // })
   },
   methods: {
     updateProgress: function (percent) {
-      const barWidth = this.data.barWidth
-      this.setData({
-        width: barWidth * percent
-      })
+      const barWidth = this.data.barWidth;
+      if(!this.data.barWidth){
+        wx.createSelectorQuery().in(this).select('#progressBar').boundingClientRect(function (rect) {
+          rect.width   // 节点的宽度
+        }).exec((res) => {
+          this.setData({
+            barWidth: res[0].width,
+            width: res[0].width * percent
+          })
+        })
+      }else{
+        this.setData({
+          width: barWidth * percent
+        })
+      }
+     
     }
   }
 })

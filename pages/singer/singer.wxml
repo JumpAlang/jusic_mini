@@ -1,3 +1,0 @@
-<view class="singer">
-  <list-view singerlist="{{singerlist}}" class="listview"></list-view>
-</view>

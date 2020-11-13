@@ -1,3 +1,0 @@
-<view>
-  <music-list title="{{title}}" image="{{image}}" songs="{{songs}}" bindmyevent="childEvent"></music-list>
-</view>

@@ -1,6 +1,0 @@
-{
-  "usingComponents": {
-    "list-view": "../components/list-view/list-view"
-  },
-  "navigationBarTitleText": "歌手"
-}

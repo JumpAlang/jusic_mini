@@ -1,60 +1,168 @@
+<wxs src="../../utils/containItem.wxs" module="containItem" />
 <view>
-  <scroll-view class="container" scroll-y hidden="{{!showHouses}}">
-    <view class="hot-list">
-    <!-- <view class="list-title">听歌房</view> -->
-    <view class="rank" ref="rank">
-      <view :data="houseList" class="toplist" ref="houseList">
-        <view>
-          <view bindtap="_selectItemRank" data-data="{{item}}" class="item" wx:for="{{houseList}}">
-            <view class="icon">
-              <image lazy-load width="100" height="100" wx:if="{{item.needPwd}}" src="/static/image/lock.png"/>
-              <image lazy-load width="100" height="100" wx:else src="/static/image/unlock.png"/>
-            </view>
-            <view class="songlist" style="{{houseId == item.id?'box-shadow:0px 0px 6px 1px white;':''}}">
-              <view class="song">
-                <text>[{{item.population}}]{{item.name}}</text>
-              </view>
-              <view class="desc">
-                <text>{{item.desc}}</text>
+  <scroll-view class="container3" scroll-y wx:if="{{showAddHouse}}">
+    <view class="logo">
+      <image src='/static/image/logo.png'></image>
+      <view>music.alang.run</view>
+    </view>
+
+    <view class="form">
+      <view class="row-group">
+        <text>名称</text>
+        <input placeholder="请填写房间名称" placeholder-class='txt' maxlength='33' value="{{form.inputHouseName}}"
+          bindinput="bindHouseNameInput" />
+      </view>
+
+      <view class="row-group">
+        <text>描述</text>
+        <input placeholder="请填写描述" placeholder-class='txt' value="{{form.inputHouseDesc}}"
+          bindinput="bindHouseDescInput" />
+      </view>
+      <view class="row-group" wx:if="{{form.needPwd}}">
+        <text>密码</text>
+        <input placeholder="请填写房间密码" placeholder-class='txt' maxlength='33' value="{{form.inputHousePwd}}"
+          bindinput="bindHousePwdInput" />
+      </view>
+
+      <view class="row-group" wx:if="{{form.retain}}">
+        <text>永存</text>
+        <input placeholder="赞赏200元的订单号" placeholder-class='txt' value="{{form.inputHouseRetain}}"
+          bindinput="bindHouseRetainInput" />
+      </view>
+
+      <view>
+        <view class="switchview">
+          <view class="switchitem">
+            <label>
+              <switch color="#ffcd32" checked="{{form.needPwd}}" bindchange="switchPwdChange" />
+              <text>密码</text>
+            </label>
+          </view>
+          <view class="switchitem">
+            <label>
+              <switch color="#ffcd32" checked="{{retain}}" bindchange="switchRetainChange" />
+              <text>永存</text>
+            </label>
+          </view>
+        </view>
+
+        <button class="submit" catchtap="createHouse">创建</button>
+        <button class="cancelcreate" catchtap="closeHouseForm">取消</button>
+      </view>
+    </view>
+  </scroll-view>
+
+  <view wx:if="{{showForAudit}}" class="content2">
+    <article></article>
+   
+
+  </view>
+  <view class="music-list" hidden="{{!showSearchMusic}}">
+    <view class="search-wrapper">
+      <i class="iconfont icon-hot" catchtap="hotMusic"></i>
+      <input class="search" placeholder="输入歌手名、歌曲名、*歌单id" bindinput="setSearchKey" value="{{searchContent}}"
+        placeholder-style="color: #ffcd32;" placeholder-class="placeholder" bindconfirm="searchFromButton" />
+      <i class="icon-search" catchtap="searchFromButton"></i>
+    </view>
+    <view class="sourceradio">
+      <radio-group bindchange="radioChange">
+        <label class="radio" wx:for="{{sources}}" wx:key="value">
+          <radio value="{{item.value}}" color="#ffcd32" checked="{{item.checked}}" />{{item.name}}
+        </label>
+      </radio-group>
+    </view>
+    <view class="scroll-wrapper">
+      <scroll-view scroll-y class="list" id="musiclist" scroll-y bindscrolltolower="getMoreSongs">
+        <view class="song-list-wrapper">
+          <view class="song-list">
+            <view>
+              <view bindtap="pickMusic" data-data="{{item}}" data-index="{{index}}" wx:for="{{songs}}" wx:key="index"
+                class="item">
+                <view class="content">
+                  <view class="name">{{item.name}}</view>
+                  <view class="desc">{{item.artist}}·{{item.album.name}}</view>
+                </view>
               </view>
             </view>
           </view>
         </view>
-        <view class="loading-container" wx:if="{{!houseList}}">
-          <loading></loading>
+      </scroll-view>
+      <view class="close-picklist" bindtap="closePick">
+        <i class="icon-close" style="color:#a1acc2"></i>
+      </view>
+
+    </view>
+
+  </view>
+
+  <view class="container" hidden="{{!showHouses}}">
+    <view class="hot-list">
+      <!-- <view class="list-title">听歌房</view> -->
+      <view class="rank" ref="rank">
+        <view :data="houseList" class="toplist" ref="houseList">
+          <scroll-view class="houselistclass" scroll-y>
+            <view bindtap="_selectItemRank" data-data="{{item}}" class="item" wx:for="{{houseList}}" wx:key="id">
+              <view class="icon">
+                <image lazy-load width="100" height="100" wx:if="{{item.needPwd}}" src="/static/image/lock.png" />
+                <image lazy-load width="100" height="100" wx:else src="/static/image/unlock.png" />
+              </view>
+              <view class="songlist" style="{{houseId == item.id?'box-shadow:0px 0px 6px 1px white;':''}}">
+                <view class="song">
+                  <text>[{{item.population}}]{{item.name}}</text>
+                </view>
+                <view class="desc">
+                  <text>{{item.desc}}</text>
+                </view>
+              </view>
+            </view>
+          </scroll-view>
+          <view class="loading-container" wx:if="{{!houseList}}">
+            <loading></loading>
+          </view>
         </view>
       </view>
     </view>
-  </view>
-  <block wx:if="{{isShowConfirm}}">
+    <view class="house-operate" bindtap="close">
+      <view class='housebutton1'>
+        <button catchtap='closeHouse'>
+          <i class="icon-close" style="color:#a1acc2"></i>
+        </button>
+      </view>
+      <view class='housebutton2'>
+        <button catchtap='addHouse'>
+          <i class="icon-add"></i>
+        </button>
+      </view>
+    </view>
+    <block wx:if="{{isShowConfirm}}">
       <view class='toast-box'>
         <view class='toastbg'></view>
         <view class='showToast'>
-            <view class='toast-title'>
-                <text>房间密码</text>
+          <view class='toast-title'>
+            <text>房间密码</text>
+          </view>
+          <view class='toast-main'>
+            <view class='toast-input'>
+              <textarea placeholder='请输入房间密码' fixed="{{true}}" style="width:190px;height:44rpx;" value="{{inputPwd}}"
+                bindinput='setValue'></textarea>
             </view>
-            <view class='toast-main'>
-                <view class='toast-input'>
-                    <input type='password' placeholder='请输入房间密码' value="{{inputPwd}}" bindinput='setValue'></input>
-                </view>
+          </view>
+          <view class='toast-button'>
+            <view class='button1'>
+              <button catchtap='cancel'>取消</button>
             </view>
-            <view class='toast-button'>
-                <view class='button1'>
-                    <button catchtap='cancel'>取消</button>
-                </view>
-                <view class='button2'>
-                    <button data-url="../allOrder/allOrder" catchtap='confirmAcceptance'>确定</button>
-                </view>
+            <view class='button2'>
+              <button catchtap='confirmAcceptance'>确定</button>
             </view>
+          </view>
         </view>
-    </view>
-     </block>
-
-  </scroll-view>
-  <view hidden="{{showHouses}}" class="player" v-show="currentSong">
+      </view>
+    </block>
+  </view>
+  <view hidden="{{showHouses || showSearchMusic || showForAudit || showAddHouse}}" class="player" v-show="currentSong">
     <view class="normal-player" wx:if="fullScreen">
       <view class="background">
-        <image src="{{currentSong.pictureUrl}}" style="width: 100%"/>
+        <image src="{{currentSong.pictureUrl}}" style="width: 100%" />
       </view>
       <view class="top">
         <view class="title">{{currentSong.name || '暂无正在播放歌曲'}}</view>
@@ -64,7 +172,7 @@
         <swiper-item class="middle-l" style="overflow: visible">
           <view class="cd-wrapper" ref="cdWrapper">
             <view class="cd {{cdCls}}">
-              <image src="{{currentSong.pictureUrl}}" alt="" class="image"/>
+              <image src="{{currentSong.pictureUrl}}" alt="" class="image" />
             </view>
           </view>
           <view class="currentLyricWrapper">{{currentText}}</view>
@@ -72,10 +180,8 @@
         <swiper-item class="middle-r">
           <scroll-view class="lyric-wrapper" scroll-y scroll-into-view="line{{toLineNum}}" scroll-with-animation>
             <view v-if="currentLyric">
-              <view ref="lyricLine"
-                    id="line{{index}}"
-                    class="text {{currentLineNum == index ? 'current': '' }}"
-                    wx:for="{{currentLyric.lines}}">{{item.txt}}
+              <view ref="lyricLine" id="line{{index}}" class="text {{currentLineNum == index ? 'current': '' }}"
+                wx:for="{{currentLyric.lines}}" wx:key="index">{{item.txt}}
               </view>
             </view>
             <view wx:if="{{!currentLyric}}">
@@ -85,7 +191,7 @@
         </swiper-item>
       </swiper>
       <view class="dots-wrapper">
-        <view class="dots {{currentDot==index?'current':''}}" wx:for="{{dotsArray}}"></view>
+        <view class="dots {{currentDot==index?'current':''}}" wx:for="{{dotsArray}}" wx:key="index"></view>
       </view>
       <view class="bottom">
         <view class="progress-wrapper">
@@ -97,25 +203,25 @@
         </view>
 
         <view class="operators">
-        
+
           <view class="icon i-left">
             <i class="iconfont  icon-61" bindtap="getHouses"></i>
           </view>
           <view class="icon i-left">
-            <i class="iconfont  icon-dian" bindtap="getHouses"></i>
+            <i class="iconfont  icon-dian" bindtap="showSearchPage"></i>
           </view>
           <!-- <view class="icon i-left">
             <i bindtap="changeMod"
                class="{{playMod==1? 'icon-sequence':''}}{{playMod==2? ' icon-random':''}}{{playMod==3?' icon-loop':''}}"></i>
           </view> -->
-        
+
           <view class="icon i-center">
             <i class="{{playIcon}}" bindtap="togglePlaying"></i>
           </view>
           <view class="icon i-right">
             <i class="icon-next" bindtap="next"></i>
           </view>
-      
+
           <view class="icon i-right" bindtap="openList">
             <i class="icon-playlist"></i>
           </view>
@@ -123,22 +229,71 @@
       </view>
     </view>
     <view class="content-wrapper {{translateCls}}">
-      <view class="close-list"  bindtap="close"></view>
+      <view class="close-list" bindtap="close"></view>
       <view class="play-content">
         <view class="plyer-list-title">播放队列({{songslist.length}}首)</view>
         <scroll-view class="playlist-wrapper" scroll-y scroll-into-view="list{{currentIndex}}">
           <view class="item {{index==0 ? 'playing':''}}" wx:for="{{songslist}}" id="list{{index}}"
-                data-index="{{index}}" data-id="{{item.id}}" bindtap="playthis" wx:key="index">
+            data-index="{{index}}" data-id="{{item.id}}" bindtap="playthis" wx:key="index">
+            <view catchtap="removeCollect" data-item="{{item}}"
+              wx:if="{{containItem.containItem(favoriteMap,item.id)}}"><i class="icon-favorite"></i></view>
+            <view catchtap="collectMusic" data-item="{{item}}" wx:else><i class="icon-not-favorite"></i></view>
+
             <view class="name">{{item.name}}</view>
             <view class="play_list__line">-</view>
             <view class="singer">{{item.artist}}</view>
             <view class="play_list__line">-</view>
             <view class="picker">{{item.nickName}}</view>
 
-            <image class="playing-img" wx:if="{{index==0}}" src="./playing.gif"/>
+            <image class="playing-img" wx:if="{{index==0}}" src="./playing.gif" />
           </view>
         </scroll-view>
-        <view class="close-playlist" bindtap="close">关闭</view>
+        <view class="close-playlist">
+          <view class='playlistbutton1'>
+            <button catchtap='close'>
+              <i class="icon-close" style="color:#a1acc2"></i>
+            </button>
+          </view>
+          <view class='playlistbutton2'>
+            <button catchtap='openFavorite'>
+              <i class="icon-favorite"></i>
+            </button>
+          </view>
+          <!-- <i class="icon-close" style="color:#a1acc2"></i> -->
+        </view>
+      </view>
+    </view>
+    <view class="content-wrapper {{translateClsFavorite}}">
+      <view class="close-list" bindtap="closeFavorite"></view>
+      <view class="play-content">
+        <view class="plyer-list-title" catchtap="removeAllCollect">取消所有收藏</view>
+        <scroll-view class="playlist-wrapper" scroll-y>
+          <view class="item" wx:for="{{favoriteMap}}" data-data="{{item}}" data-index="{{index}}" data-id="{{item.id}}"
+            bindtap="pickMusic" wx:key="index">
+            <view catchtap="removeCollect" data-item="{{item}}"><i class="icon-favorite"></i></view>
+
+            <view class="name">{{item.name}}</view>
+            <view class="play_list__line">-</view>
+            <view class="singer">{{item.artist}}</view>
+            <view class="play_list__line">-</view>
+            <view class="picker">{{item.album.name}}</view>
+
+          </view>
+        </scroll-view>
+        <view class="close-playlist">
+          <view class='playlistbutton2'>
+            <button catchtap='playAllFavorite'>
+              <i class="icon-play"></i>
+            </button>
+          </view>
+          <view class='playlistbutton1'>
+            <button catchtap='closeFavorite'>
+              <i class="icon-close" style="color:#a1acc2"></i>
+            </button>
+          </view>
+          
+          <!-- <i class="icon-close" style="color:#a1acc2"></i> -->
+        </view>
       </view>
     </view>
   </view>

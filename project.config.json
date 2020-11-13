@@ -80,6 +80,7 @@
         {
           "name": "pages/player/player",
           "pathName": "pages/player/player",
+          "query": "",
           "scene": null
         }
       ]

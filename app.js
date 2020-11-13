@@ -22,10 +22,10 @@ App({
     fullScreen: false,
     songlist: [],
     playing: false,
-    innerAudioContext: null,
+		innerAudioContext: null,
+		backgroundManage:null
   },
-  scope: null,
-  
+	scope: null,
   onLaunch: function () {
     // 展示本地存储能力
     var logs = wx.getStorageSync('logs') || []
@@ -136,15 +136,19 @@ App({
 		// 	})
 		// 	return;
 		// }
-		wx.showModal({
-			content : '服务器未开启' , 
-			confirmText : '尝试重连' , 
-			success : (res) => {
-				if (res.confirm) {
-					this.reconnect();
+		if(this.intervalNumber > 2){
+			wx.showModal({
+				content : '服务器未开启' , 
+				confirmText : '尝试重连' , 
+				success : (res) => {
+					if (res.confirm) {
+						this.reconnect();
+					}
 				}
-			}
-		})
+			})
+		}else{
+			this.justReconnect();
+		}
 		this.scope && this.scope.setData({
 			disabled : true 
 		})
@@ -171,6 +175,20 @@ App({
 			})
 		}
 	} , 
+		// 重连机制
+	justReconnect : function(){
+			this.state = 2; // 重连
+			this.interval = setInterval(() => {
+				this.intervalNumber ++;
+				if (this.intervalNumber > 2) {
+					clearInterval(this.interval);
+					return;
+				}
+			
+				// 定时检查服务器是否可连接
+				this.openConnect(this.globalData.wsurl , this.globalData.houseId,this.globalData.housePwd,"enter",this.scope.socketReceiver,this.scope);
+			} , 1500);
+		} , 
 	// 重连机制
 	reconnect : function(){
 		this.state = 2; // 重连
@@ -186,7 +204,7 @@ App({
 				title : '正在重连第' + this.intervalNumber + '次' , 
 				// duration : 1500 ,
 			})
-			if(this.intervalNumber == 4){
+			if(this.intervalNumber == 33){
 				this.globalData.houseId = 'DEFAULT';
 			}
 			// 定时检查服务器是否可连接
@@ -237,6 +255,7 @@ App({
 						mask : true , 
 						title : data.message , 
 					})
+					faild();
 					return;
 				}
 			} , 

@@ -1,7 +1,0 @@
-{
-  "component": true,
-  "usingComponents": {
-    "song-list": "../song-list/song-list",
-    "loading": "../loading/loading"
-  }
-}

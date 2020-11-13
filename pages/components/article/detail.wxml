@@ -1,0 +1,15 @@
+<view class="container">
+    <view class="title">{{article.title}}</view>
+    <view class="meta-header">
+        <text class="author">{{article.author}}</text>
+        <!-- <text class="posted-date">{{article.posted_at}}</text> -->
+    </view>
+    <view class="content">
+        <rich-text nodes="{{article.content}}"></rich-text>
+    </view>
+    <!-- <view class="meta-footer">
+        <text class="views">{{article.views}}</text>
+        <text class="votes">{{article.votes}}</text>
+    </view> -->
+    <!-- <text class="info" wx:if="{{info}}">{{info}}</text> -->
+</view>

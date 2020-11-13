@@ -1,3 +1,0 @@
-<view>
-  <music-list title="{{title}}" image="{{topList[0].image}}" songs="{{topList}}"></music-list>
-</view>

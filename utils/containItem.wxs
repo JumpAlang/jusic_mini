@@ -1,0 +1,4 @@
+function containItem(array, item) {
+  return array[item] != null && array[item] != undefined
+}
+  module.exports.containItem = containItem;

@@ -40,7 +40,7 @@
           </view>
           <view class="switchitem">
             <label>
-              <switch color="#ffcd32" checked="{{retain}}" bindchange="switchRetainChange" />
+              <switch color="#ffcd32" checked="{{form.retain}}" bindchange="switchRetainChange" />
               <text>永存</text>
             </label>
           </view>

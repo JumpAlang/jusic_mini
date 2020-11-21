@@ -1,6 +1,6 @@
 # jusic_mini
 [一起听歌吧](https://github.com/JumpAlang/Jusic-Serve-Houses)微信小程序版， 现已上线微信小程序  可以搜索"灵魂自习室"查找本小程序,或扫描下方二维码
-![房间列表](https://github.com/JumpAlang/jusic_mini/blob/main/static/screenshot/miniCode.jpg);
+![小程序码](https://github.com/JumpAlang/jusic_mini/blob/main/static/screenshot/miniCode.jpg);
 
 
 # 参考项目

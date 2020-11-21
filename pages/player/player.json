@@ -1,6 +1,7 @@
 {
   "usingComponents": {
     "progress-bar": "../components/progress/progress",
-    "article": "../components/article/detail"
+    "article": "../components/article/detail",
+    "manual": "../components/manual/manual"
   }
 }

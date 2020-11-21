@@ -284,11 +284,13 @@
     line-height: 100rpx;
     border-top: 1px solid rgba(255, 255, 255, .3);
     font-size: 16px;
-    display:flex;
+    display: flex;
 }
-.playlistbutton1{
-    width:50%;
+
+.playlistbutton1 {
+    width: 50%;
 }
+
 .playlistbutton1 button {
     width: 100%;
     background-color: #222;
@@ -298,9 +300,11 @@
     line-height: 100rpx;
     font-size: 16px;
 }
-.playlistbutton2{
-    width:50%;
+
+.playlistbutton2 {
+    width: 50%;
 }
+
 .playlistbutton2 button {
     width: 100%;
     background-color: #222;
@@ -312,15 +316,15 @@
 }
 
 .close-picklist {
-    height: 80rpx;
+    height: 100rpx;
     width: 100%;
     text-align: center;
-    line-height: 80rpx;
+    line-height: 100rpx;
     border-top: 1px solid #ffcd32;
     font-size: 16px;
     position: fixed;
     bottom: 0px;
-
+    display: flex;
 }
 
 .plyer-list-title {
@@ -488,9 +492,11 @@
 .container {
     height: 100%;
 }
-.houselistclass{
+
+.houselistclass {
     height: 94vh;
 }
+
 .toast-box {
     width: 100%;
     height: 100%;
@@ -596,6 +602,14 @@
     margin-left: 12%;
 }
 
+.search-wrapper .searchUser {
+    border-radius: 5px;
+    border: 1px solid #333;
+    font-size: 16px;
+    width: 90%;
+    /* margin-left: 5%; */
+}
+
 .placeholder {
     font-size: 12px;
     text-align: center;
@@ -610,6 +624,13 @@
 }
 
 .search-wrapper .icon-hot {
+    position: absolute;
+    left: 20rpx;
+    top: 20rpx;
+    width: 10%;
+}
+
+.icon-mine {
     position: absolute;
     left: 20rpx;
     top: 20rpx;
@@ -669,7 +690,7 @@
     top: 15%;
     bottom: 0;
     width: 100%;
-    height: 78%;
+    height: 76%;
     background: #222;
 }
 
@@ -823,44 +844,48 @@
     box-sizing: border-box;
     /* background-color: #f2f2f2 */
 }
-.logo{
+
+.logo {
     display: flex;
     flex-direction: column;
     align-items: center;
-  }
-  .logo image{
+}
+
+.logo image {
     margin-top: 100rpx;
     width: 216rpx;
     height: 200rpx;
-  }
-  .form{
+}
+
+.form {
     padding: 40rpx;
-  }
-  .form .row-group{
+}
+
+.form .row-group {
     padding: 20rpx 0;
     position: relative;
     border-bottom: 1rpx solid #ddd;
-  }
-  
-  .form .row-group text{
+}
+
+.form .row-group text {
     font-size: 28rpx;
-    padding:10rpx 0;
-  }
-  
-  .form .row-group input{
     padding: 10rpx 0;
-  }
-  
-  .form .row-group .txt{
+}
+
+.form .row-group input {
+    padding: 10rpx 0;
+}
+
+.form .row-group .txt {
     color: #ccc;
-  }
-  
-  .form .row-group .code{
+}
+
+.form .row-group .code {
     position: absolute;
     right: 0;
     bottom: 26rpx;
     z-index: 2;
-  
+
     width: 206rpx;
     height: 60rpx;
     border: 2rpx solid #00c8b6;
@@ -871,46 +896,438 @@
     display: flex;
     align-items: center;
     justify-content: center;
-  }
-  
-  .form .submit{
+}
+
+.form .submit {
     margin-top: 40rpx;
     color: #fff;
     /* border: 2rpx solid #00c8b6; */
     background-color: #424242;
     font-size: 32rpx;
     font-weight: bold;
-  }
-  .form .cancelcreate{
+}
+
+.form .cancelcreate {
     margin-top: 20rpx;
     color: #fff;
     /* border: 2rpx solid #00c8b6; */
     background-color: gray;
     font-size: 32rpx;
     font-weight: bold;
-  }
+}
 
-  /*swtich整体大小及背景色*/
-.wx-switch-input{
-    width:80rpx !important;
-    height:35rpx !important;
+/*swtich整体大小及背景色*/
+.wx-switch-input {
+    width: 80rpx !important;
+    height: 35rpx !important;
     /* background: #ccc !important; */
     border: #ccc !important;
-  }
-  /*白色样式（false的样式）*/
-  .wx-switch-input::before{
-    width:80rpx !important;
+}
+
+/*白色样式（false的样式）*/
+.wx-switch-input::before {
+    width: 80rpx !important;
     height: 35rpx !important;
-  }
-  /* 中间的小圆球 */
-  /*绿色样式（true的样式）*/
-  .wx-switch-input::after{
+}
+
+/* 中间的小圆球 */
+/*绿色样式（true的样式）*/
+.wx-switch-input::after {
     width: 40rpx !important;
     height: 35rpx !important;
-  }
-  .switchview{
-    display:flex;margin-top:20rpx;
-  }
-  .switchitem{
-    display:flex;width:50%;
-  }
+}
+
+.switchview {
+    display: flex;
+    margin-top: 20rpx;
+}
+
+.switchitem {
+    display: flex;
+    width: 50%;
+}
+
+.icon-gedan {
+    font-size: 20px;
+}
+
+/* 聊天内容 */
+
+.news {
+
+    padding-top: 3rpx;
+
+    text-align: center;
+
+    /* height:100%; */
+
+    box-sizing: border-box;
+
+}
+
+#flag {
+
+    margin-bottom: 100rpx;
+
+    height: 30rpx;
+
+}
+
+.chat-notice {
+
+    text-align: center;
+
+    font-size: 30rpx;
+
+    padding: 10rpx 0;
+
+    color: #666;
+
+}
+
+.historycon {
+
+    height: 90vh;
+
+    width: 100%;
+
+    /* flex-direction: column; */
+
+    display: flex;
+
+    border-top: 0px;
+
+}
+
+/* 聊天 */
+
+.chat-news {
+
+    width: 100%;
+
+    overflow: hidden;
+
+}
+
+.chat-news .my_right {
+
+    float: right;
+
+    /* right: 40rpx; */
+
+    padding: 10rpx 10rpx;
+
+}
+
+.chat-news .name {
+
+    margin-right: 10rpx;
+
+}
+
+.chat-news .you_left {
+
+    float: left;
+
+    /* left: 5rpx; */
+
+    padding: 10rpx 10rpx;
+
+}
+
+.selectImg {
+
+    display: inline-block;
+
+    width: 150rpx;
+
+    height: 150rpx;
+
+    margin-left: 50rpx;
+
+}
+
+.my_right .selectImg {
+
+    margin-right: 80rpx;
+
+}
+
+.new_img {
+
+    width: 60rpx;
+
+    height: 60rpx;
+
+    border-radius: 50%;
+
+    vertical-align: middle;
+
+    margin-right: 10rpx;
+
+}
+
+.new_txt {
+
+    max-width: 300rpx;
+
+    display: inline-block;
+
+    border-radius: 6rpx;
+
+    line-height: 60rpx;
+
+    /* background-color: #e0ecff; */
+    /* border:1px solid white; */
+    box-shadow:0px 0px 6px 1px white;
+    padding: 5rpx 20rpx;
+
+    margin: 0 10rpx;
+
+    margin-left: 50rpx;
+
+}
+
+.my_right .new_txt {
+
+    margin-right: 60rpx;
+
+}
+
+.you {
+
+    background-color: lightgreen;
+
+}
+
+.my {
+
+    border-color: transparent transparent transparent #95d4ff;
+
+}
+
+.you {
+
+    border-color: transparent #95d4ff transparent transparent;
+
+}
+
+.hei {
+
+    margin-top: 50px;
+
+    height: 20rpx;
+
+}
+
+.history {
+
+    /* height: 100%; */
+
+    margin-top: 15px;
+
+    padding: 10rpx;
+
+    font-size: 14px;
+
+    line-height: 40px;
+
+    word-break: break-all;
+
+}
+
+::-webkit-scrollbar {
+
+    width: 0;
+
+    height: 0;
+
+    color: transparent;
+
+    z-index: -1;
+
+}
+
+
+
+/* 信息输入区域 */
+
+.message {
+
+    position: fixed;
+
+    bottom: 0;
+
+    width: 100%;
+    background-color: #222;
+
+}
+
+.sendMessage {
+
+    display: block;
+
+    height: 80rpx;
+
+    padding: 10rpx 10rpx;
+
+    /* background-color: #fff; */
+
+    border-top: 2rpx solid #504c45;
+
+    border-bottom: 2rpx solid #504c45;
+
+    z-index: 3;
+
+}
+
+.sendMessage input {
+
+    float: left;
+
+    width: 59%;
+
+    height: 100%;
+
+    line-height: 80rpx;
+
+    /* border-bottom: 1rpx solid #ccc; */
+
+    padding: 0 10rpx;
+
+    font-size: 35rpx;
+
+    color: #666;
+
+}
+
+.sendMessage view {
+
+    display: inline-block;
+
+    width: 80rpx;
+
+    height: 80rpx;
+
+    line-height: 66rpx;
+
+    font-size: 60rpx;
+
+    text-align: center;
+
+    color: gray;
+
+    border: 1rpx solid #504c45;
+
+    border-radius: 50%;
+
+    margin-left: 10rpx;
+
+}
+
+.sendMessage button {
+
+    float: right;
+
+    font-size: 35rpx;
+
+}
+.sendbtn{
+    background-color: #222;
+    color: #a1acc2;
+    border:0px solid black;
+}
+.icon-paper{
+    font-size: 44rpx;
+}
+.increased {
+
+    width: 100%;
+
+    /* height: 150rpx; */
+    padding: 40rpx 10rpx;
+    display:flex;
+    justify-content: space-between;
+    flex-direction: row;
+    flex-wrap: wrap;
+    /* background-color: #504c45; */
+
+}
+.increased button{
+    /* width: 100rpx; */
+    height: 70rpx;
+    line-height: 70rpx;
+    font-size: 30rpx;
+    color: #a1acc2 !important;
+}
+
+.increased .image {
+
+    width: 100rpx;
+
+    height: 100rpx;
+
+    border: 3rpx solid #504c45;
+
+    line-height: 100rpx;
+
+    text-align: center;
+
+    border-radius: 8rpx;
+
+    font-size: 35rpx;
+
+}
+
+@keyframes slidedown {
+
+    from {
+
+        transform: translateY(0);
+
+    }
+
+    to {
+
+        transform: translateY(100%);
+
+    }
+
+}
+
+.slidedown {
+
+    animation: slidedown 0.5s linear;
+
+}
+
+.slideup {
+
+    animation: slideup 0.5s linear;
+
+}
+
+@keyframes slideup {
+
+    from {
+
+        transform: translateY(100%);
+
+    }
+
+    to {
+
+        transform: translateY(0);
+
+    }
+
+}
+
+.dateCs{
+    color:gray;
+}
+
+.sendMessage .icon{
+    font-size: 14px;
+    color: #a1acc2;
+}

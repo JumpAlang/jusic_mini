@@ -1,5 +1,7 @@
 # jusic_mini
-[一起听歌吧](https://github.com/JumpAlang/Jusic-Serve-Houses)微信小程序版， 现已上线微信小程序  可以搜索"灵魂自习室"查找本小程序
+[一起听歌吧](https://github.com/JumpAlang/Jusic-Serve-Houses)微信小程序版， 现已上线微信小程序  可以搜索"灵魂自习室"查找本小程序,或扫描下方二维码
+![房间列表](https://github.com/JumpAlang/jusic_mini/blob/main/static/screenshot/miniCode.jpg);
+
 
 # 参考项目
 
@@ -22,12 +24,20 @@
 * 点歌：支持:*歌单id、歌手、歌曲、热歌榜搜索
 * 当前播放列表展示
 * 歌曲收藏及播放
+* 歌单搜索
+* 聊天互动
+* 管理员功能
 
 ## TODO:
+前端：
+1.歌曲播放的流畅度（有时进入房间播放不出来）
+2.用户体验优化
+3.斗图功能
 
-1. 歌单搜索
-2. 聊天互动
-3. 管理员功能
+后端：
+1.点播列表及网易歌单超过10条问题（微信有限制socket通信包的大小）
+2.聊天互动支持显示用户头像
+
 
 
 
@@ -47,6 +57,11 @@
 ![歌词页面](https://github.com/JumpAlang/jusic_mini/blob/main/static/screenshot/lyric.jpg);
 
 ![点歌页面](https://github.com/JumpAlang/jusic_mini/blob/main/static/screenshot/search.jpg);
+![歌单页面](https://github.com/JumpAlang/jusic_mini/blob/main/static/screenshot/songitem.jpg);
 
 ![收藏页面](https://github.com/JumpAlang/jusic_mini/blob/main/static/screenshot/collect.jpg);
+
+#### 3.聊天
+![聊天页面](https://github.com/JumpAlang/jusic_mini/blob/main/static/screenshot/chat.jpg);
+
 

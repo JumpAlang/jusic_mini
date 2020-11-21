@@ -54,7 +54,103 @@
 
   <view wx:if="{{showForAudit}}" class="content2">
     <article></article>
-   
+  </view>
+  <view wx:if="{{showManual}}" class="content2">
+    <button  type="primary" bindtap="closeManual" style="width:120rpx;height:80rpx;line-height:80rpx;position:fixed;bottom:10rpx;right:10rpx;font-size:25rpx">返回</button>
+    <manual></manual>
+  </view>
+  <view class="music-list" wx:if="{{showSearchMusicUser}}">
+    <view class="search-wrapper">
+      <input class="searchUser" placeholder="请输入用户昵称" bindinput="setSearchUserKey" value="{{searchUserContent}}"
+        placeholder-style="color: #ffcd32;" placeholder-class="placeholder" bindconfirm="searchUserFromButton" />
+      <i class="icon-search" catchtap="searchUserFromButton"></i>
+    </view>
+    <view class="sourceradio">
+      <radio-group bindchange="radioChangeUser">
+        <label class="radio" wx:for="{{sourcesUser}}" wx:key="value">
+          <radio value="{{item.value}}" color="#ffcd32" checked="{{item.checked}}" />{{item.name}}
+        </label>
+      </radio-group>
+    </view>
+    <view class="scroll-wrapper">
+      <scroll-view scroll-y class="list" id="musiclist" scroll-y bindscrolltolower="getMoreSongsUser">
+        <view class="song-list-wrapper">
+          <view class="song-list">
+            <view>
+              <view bindtap="gotoMusicItem" data-data="{{item}}" data-index="{{index}}" wx:for="{{songsUser}}"
+                wx:key="index" class="item">
+                <view class="content">
+                  <view class="name">{{item.nickname}}·{{item.gender==1?'男':(item.gender==2?'女':'未知' )}}</view>
+                  <view class="desc">{{item.signature?item.signature+'·':''}}{{item.description}}</view>
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </scroll-view>
+      <view class="close-picklist">
+        <view class='playlistbutton1'>
+          <button catchtap='closeMusicUser'>
+            <i class="icon-close" style="color:#a1acc2"></i>
+          </button>
+        </view>
+        <view class='playlistbutton2'>
+          <button catchtap='openMusicItem'>
+            <i class="iconfont icon-gedan"></i>
+          </button>
+        </view>
+      </view>
+
+    </view>
+
+  </view>
+  <view class="music-list" wx:if="{{showSearchMusicList}}">
+    <view class="search-wrapper">
+      <i class="icon-mine" catchtap="showSearchUserPage"></i>
+      <input class="search" placeholder="{{searchItemPlaceHolder}}" bindinput="setSearchItemKey"
+        value="{{searchItemContent}}" placeholder-style="color: #ffcd32;" placeholder-class="placeholder"
+        bindconfirm="searchItemFromButton" />
+      <i class="icon-search" catchtap="searchItemFromButton"></i>
+    </view>
+    <view class="sourceradio">
+      <radio-group bindchange="radioChangeItem">
+        <label class="radio" wx:for="{{sourcesItem}}" wx:key="value">
+          <radio value="{{item.value}}" color="#ffcd32" checked="{{item.checked}}" />{{item.name}}
+        </label>
+      </radio-group>
+    </view>
+    <view class="scroll-wrapper">
+      <scroll-view scroll-y class="list" id="musiclist" scroll-y bindscrolltolower="getMoreSongsItem">
+        <view class="song-list-wrapper">
+          <view class="song-list">
+            <view>
+              <view bindtap="gotoMusic" data-data="{{item}}" data-index="{{index}}" bindlongpress="copyId" wx:for="{{songsItem}}"
+                wx:key="index" class="item">
+                <view class="content">
+                  <view class="name">{{item.name}}</view>
+                  <view class="desc">
+                    {{item.creator}}·{{item.creatorUid}}{{item.playCount?'·'+item.playCount+'播':''}}{{item.songCount?'·'+item.songCount+'首':''}}
+                  </view>
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </scroll-view>
+      <view class="close-picklist">
+        <view class='playlistbutton1'>
+          <button catchtap='closeMusicItem'>
+            <i class="icon-close" style="color:#a1acc2"></i>
+          </button>
+        </view>
+        <view class='playlistbutton2'>
+          <button catchtap='openMusicList'>
+            <i class="icon-music"></i>
+          </button>
+        </view>
+      </view>
+
+    </view>
 
   </view>
   <view class="music-list" hidden="{{!showSearchMusic}}">
@@ -76,7 +172,7 @@
         <view class="song-list-wrapper">
           <view class="song-list">
             <view>
-              <view bindtap="pickMusic" data-data="{{item}}" data-index="{{index}}" wx:for="{{songs}}" wx:key="index"
+              <view bindtap="pickMusic" data-data="{{item}}" bindlongpress="copyId" data-index="{{index}}" wx:for="{{songs}}" wx:key="index"
                 class="item">
                 <view class="content">
                   <view class="name">{{item.name}}</view>
@@ -87,8 +183,17 @@
           </view>
         </view>
       </scroll-view>
-      <view class="close-picklist" bindtap="closePick">
-        <i class="icon-close" style="color:#a1acc2"></i>
+      <view class="close-picklist">
+        <view class='playlistbutton1'>
+          <button catchtap='closePick'>
+            <i class="icon-close" style="color:#a1acc2"></i>
+          </button>
+        </view>
+        <view class='playlistbutton2'>
+          <button catchtap='showSearchItemPage'>
+            <i class="iconfont icon-gedan"></i>
+          </button>
+        </view>
       </view>
 
     </view>
@@ -159,7 +264,9 @@
       </view>
     </block>
   </view>
-  <view hidden="{{showHouses || showSearchMusic || showForAudit || showAddHouse}}" class="player" v-show="currentSong">
+  <view
+    hidden="{{showHouses || showSearchMusic || showForAudit || showAddHouse || showSearchMusicList || showSearchMusicUser || showTalkMsg || showManual}}"
+    class="player" v-show="currentSong">
     <view class="normal-player" wx:if="fullScreen">
       <view class="background">
         <image src="{{currentSong.pictureUrl}}" style="width: 100%" />
@@ -221,9 +328,11 @@
           <view class="icon i-right">
             <i class="icon-next" bindtap="next"></i>
           </view>
-
           <view class="icon i-right" bindtap="openList">
             <i class="icon-playlist"></i>
+          </view>
+          <view class="icon i-right">
+            <i class="iconfont icon-talk-message" bindtap="talk"></i>
           </view>
         </view>
       </view>
@@ -234,7 +343,8 @@
         <view class="plyer-list-title">播放队列({{songslist.length}}首)</view>
         <scroll-view class="playlist-wrapper" scroll-y scroll-into-view="list{{currentIndex}}">
           <view class="item {{index==0 ? 'playing':''}}" wx:for="{{songslist}}" id="list{{index}}"
-            data-index="{{index}}" data-id="{{item.id}}" bindtap="playthis" wx:key="index">
+            data-index="{{index}}" data-id="{{item.id}}" data-data="{{item}}" bindtap="playthis" wx:key="index"
+            bindlongpress="deletePick">
             <view catchtap="removeCollect" data-item="{{item}}"
               wx:if="{{containItem.containItem(favoriteMap,item.id)}}"><i class="icon-favorite"></i></view>
             <view catchtap="collectMusic" data-item="{{item}}" wx:else><i class="icon-not-favorite"></i></view>
@@ -269,7 +379,7 @@
         <view class="plyer-list-title" catchtap="removeAllCollect">取消所有收藏</view>
         <scroll-view class="playlist-wrapper" scroll-y>
           <view class="item" wx:for="{{favoriteMap}}" data-data="{{item}}" data-index="{{index}}" data-id="{{item.id}}"
-            bindtap="pickMusic" wx:key="index">
+            bindtap="pickMusicFromFavorite" wx:key="index">
             <view catchtap="removeCollect" data-item="{{item}}"><i class="icon-favorite"></i></view>
 
             <view class="name">{{item.name}}</view>
@@ -291,10 +401,81 @@
               <i class="icon-close" style="color:#a1acc2"></i>
             </button>
           </view>
-          
+
           <!-- <i class="icon-close" style="color:#a1acc2"></i> -->
         </view>
       </view>
     </view>
   </view>
+<view hidden="{{!showTalkMsg}}">
+  <view class="news" bindtap='outbtn'>
+    <view class="historycon">
+      <scroll-view scroll-y="true" class="history" scroll-top="{{scrollTop}}" scroll-into-view='{{toMsgView}}'>
+        <block wx:for="{{newslist}}" wx:key="index">
+          <view wx:if="{{item.sendTime}}" class="dateCs">{{item.sendTime}}</view>
+          <view class="chat-notice" wx:if="{{item.type=='notice'}}" id="msg-{{index}}">{{ item.content }}</view>
+          <!--自己的消息 -->
+          <view class="chat-news" wx:if="{{item.type=='chat' && (item.sessionId == sessionId)}}"  id="msg-{{index}}">
+            <view style="text-align: right;padding-right: 20rpx;">
+              <text class="name">{{ item.nickName }}</text>
+              <image class='new_img' src="{{(userInfo && userInfo.avatarUrl) ? userInfo.avatarUrl : '../../static/image/my.png'}}"></image>
+            </view>
+            <view class='my_right'>
+              <block wx:if="{{item.type=='chat'}}">
+                <view class='new_txt' wx:if="{{item.content && item.content != ' '}}">{{item.content}}</view>
+              </block>
+              <block wx:if="{{item.type=='chat' && item.images && item.images.length > 0}}">
+                <image class="selectImg" wx:for="{{item.images}}" wx:key="index" wx:for-item="imageItem" src="{{imageItem}}" data-src="{{imageItem}}" lazy-load="true"
+                  bindtap="previewImg"></image>
+              </block>
+            </view>
+          </view>
+          <!-- 别人的消息 -->
+          <view class="chat-news" wx:elif="{{item.type == 'chat'}}"  id="msg-{{index}}">
+            <view style="text-align: left;padding-left: 20rpx;" data-data="{{item}}" bindtap="secretTalk">
+              <image class='new_img' src="{{item.avatarUrl? item.avatarUrl:'../../static/image/my.png'}}"></image>
+              <text class="name">{{ item.nickName }}</text>
+            </view>
+            <view class='you_left'>
+              <block wx:if="{{item.type=='chat'}}">
+                <view class='new_txt' wx:if="{{item.content && item.content != ' '}}">{{item.content}}</view>
+              </block>
+              <block wx:if="{{item.type=='chat' && item.images && item.images.length > 0}}">
+                <image class="selectImg"  wx:key="index" wx:for="{{item.images}}" wx:for-item="imageItem" src="{{imageItem}}" data-src="{{imageItem}}" lazy-load="true"
+                  bindtap="previewImg"></image>
+              </block>
+            </view>
+          </view>
+        </block>
+      </scroll-view>
+    </view>
+
+  </view>
+
+  <view id="flag" ></view>
+
+  <!-- 聊天输入 -->
+
+  <view class="message">
+    <form class="sendMessage">
+      <input type="text" focus="{{focus}}" hold-keyboard="{{true}}" placeholder="请输入聊天内容.." value="{{message}}" bindinput='bindChange' bindconfirm="send"></input>
+      <view bindtap='send'><i class="iconfont icon-paper"></i></view>
+      <view class="add" bindtap='increase'><i class="icon icon-add"></i></view>
+      <view class="add" bindtap='closetalk'><i class='icon icon-close'></i></view>
+      <!-- <button bindtap='send' class="sendbtn" plain="{{true}}" formType="reset"></button> -->
+    </form>
+
+    <view class='increased {{aniStyle?"slideup":"slidedown"}}' wx:if="{{increase}}">
+      <button plain="{{true}}" type="default" bindgetuserinfo="getUserInfo" openType="getUserInfo" wx:if="{{!hasUserInfo&&canIUse}}">登录</button>
+      <button plain="{{true}}" type="default" bindtap='getHouseUser'>同道</button>
+      <button plain="{{true}}" type="default" bindtap='clearScr'>清屏</button>
+      <button plain="{{true}}" type="default" bindtap='manual'>说明</button>
+
+      <!-- <button plain="{{true}}" type="default" bindtap='setName'>设置昵称</button>
+      <button plain="{{true}}" type="default" bindtap='setName'>设置昵称</button> -->
+
+    </view>
+
+  </view>
+</view>
 </view>

@@ -1,4 +1,20 @@
 function containItem(array, item) {
   return array[item] != null && array[item] != undefined
+};
+function formatTime(d){
+  let date = d;
+  if(!d) date = Date.now();
+  const year = date.getFullYear()
+  const month = date.getMonth() + 1
+  const day = date.getDate()
+  const hour = date.getHours()
+  const minute = date.getMinutes()
+  const second = date.getSeconds()
+  let dateStr = [year, month, day].map(formatNumber).join('/') + ' ' + [hour, minute, second].map(formatNumber).join(':');
+  return dateStr;
 }
-  module.exports.containItem = containItem;
+  module.exports = {
+    containItem : containItem,
+    formatTime : formatTime
+  }
+  module.exports.currentTime = Date.now();

@@ -146,7 +146,7 @@ messageUtils.parseMessageType = function (source) {
     return ''
   }
   source = source.substring(3, source.length - 2);
-  console.log("typeparse", source);
+  // console.log("typeparse", source);
   let strings = source.split('\\n');
   return strings.length > 0 ? strings[0] : ''
 };
@@ -187,14 +187,15 @@ messageUtils.parseMessageContent = function (source) {
     return '';
   }
   source = source.substring(index, source.length - 2);
-  console.log(source);
+  // console.log(source);
   // console.log("json",source);
   // let strings = source.split('\n');
   // console.log("content-1",strings);
 
   // console.log("content0",strings[strings.length-1]);
   source = source.replace(/\\\\\\"/g, '');
-  source = source.replace(/\\/g, '');
+  source = source.replace(/\\\\n/g, '\\n');
+  source = source.replace(/\\"/g, '"');
   console.log("content", source);
   let json = JSON.parse(source);
   // console.log("json",json);
@@ -244,7 +245,12 @@ timeUtils.secondsToHH_mm_ss = function (seconds) {
 };
 
 timeUtils.secondsToYYYY_HH_mm_ss = function (seconds) {
-  let date = new Date(seconds);
+  let date;
+  if(seconds){
+    date = new Date(seconds);
+  }else{
+    date  = new Date();
+  }
   return date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
 
 };

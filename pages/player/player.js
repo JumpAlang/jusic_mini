@@ -10,14 +10,14 @@ const SINGLE_CYCLE_MOD = 3
 Page({
   onShareAppMessage: function () {
     return {
-      title: this.data.currentSong ? '来和我一起听：' + this.data.currentSong.name + '-' + this.data.currentSong.artist : '选个房间一起听歌吧',
+      title: this.data.currentSong ? '和我一起听：' + this.data.currentSong.name + '-' + this.data.currentSong.artist : '选个房间一起听歌吧',
       imageUrl: this.data.currentSong ? this.data.currentSong.pictureUrl : '',
       path: "/pages/player/player?houseId=" + this.data.houseId + "&housePwd=" + this.data.housePwd
     };
   },
   onShareTimeline: function () {
     return {
-      title: this.data.currentSong ? '来和我一起听：' + this.data.currentSong.name + '-' + this.data.currentSong.artist : '来和我一起听歌吧',
+      title: this.data.currentSong ? '和我一起听：' + this.data.currentSong.name + '-' + this.data.currentSong.artist : '来和我一起听歌吧',
       imageUrl: this.data.currentSong ? this.data.currentSong.pictureUrl : '',
       path: "/pages/player/player?houseId=" + this.data.houseId + "&housePwd=" + this.data.housePwd
     };
@@ -112,7 +112,6 @@ Page({
     songs: [],
     songsItem: [],
     songsUser: [],
-    backgroundManage: {},
     showForAudit: true,
     showAddHouse: false,
     form: {
@@ -137,7 +136,7 @@ Page({
     hasUserInfo: false,
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
     sessionId: '',
-    showManual:false
+    showManual: false
   },
   onLoad: function (option) {
     if (!origin.globalData.backgroundManage) {
@@ -169,8 +168,8 @@ Page({
         connectType: option.connectType,
         showForAudit: false
       });
-      this.connectSocket();
       this.setHouseName(option.houseId);
+      // this.connectSocket();
     } else {
       this.getHouseListForAudit();
     }
@@ -232,16 +231,28 @@ Page({
       that.setData({
         houseList: res
       });
+      let existed = false;
       for (let i = 0; i < res.length; i++) {
         if (res[i].id == houseId) {
+          existed = true;
           that.setData({
             houseName: res[i].name
           });
           wx.setNavigationBarTitle({
             title: res[i].name
-          })
+          });
+          that.connectSocket();
           break;
         }
+      }
+      if (!existed) {
+        wx.showToast({
+          icon: 'none',
+          title: '房间已不存在，请重新选择',
+        });
+        that.setData({
+          showHouses: true
+        })
       }
     });
   },
@@ -255,7 +266,7 @@ Page({
         houseList: res
       });
       for (let i = 0; i < res.length; i++) {
-        if (res[i].name == 'success') {
+        if (res[i].desc == 'success') {
           that.setData({
             showHouses: true,
             showForAudit: false
@@ -321,6 +332,7 @@ Page({
           this.setData({
             newslist: this.data.newslist
           });
+          this.bottom();
           break;
         case util.messageUtils.messageType.SETTING_NAME:
           this.data.newslist.push({
@@ -330,6 +342,7 @@ Page({
           this.setData({
             newslist: this.data.newslist
           });
+          this.bottom();
           break;
         case util.messageUtils.messageType.AUTH_ROOT:
           this.data.newslist.push({
@@ -339,28 +352,42 @@ Page({
           this.setData({
             newslist: this.data.newslist
           });
+          this.bottom();
           break;
         case util.messageUtils.messageType.GOODMODEL:
           var data = messageContent.data;
+          let title = '';
           if (data == "GOOD") {
-            wx.showToast({
-              icon: 'none',
-              title: '当前是点赞模式',
-            })
+            title = '当前是点赞模式';
           } else {
-            wx.showToast({
-              icon: 'none',
-              title: '已退出点赞模式',
-            })
+            title = '已退出点赞模式';
           }
+          wx.showToast({
+            icon: 'none',
+            title: title,
+          })
+          this.data.newslist.push({
+            content: title,
+            type: "notice"
+          });
+          this.setData({
+            newslist: this.data.newslist
+          });
           // this.$forceUpdate();
-
+          this.bottom();
           break;
         case util.messageUtils.messageType.VOLUMN:
           //console.log(messageContent.data);
           // music.volume = Number(messageContent.data) / 100;
           // this.$store.commit("setPlayerVolume", messageContent.data);
-
+          this.data.newslist.push({
+            content: '音量设置为'+messageContent.data,
+            type: "notice"
+          });
+          this.setData({
+            newslist: this.data.newslist
+          });
+          this.bottom();
           break;
         case util.messageUtils.messageType.ONLINE:
           if (
@@ -386,10 +413,10 @@ Page({
           // this.lastLyric="";
           // this.$store.commit("setPlayerLyric", "");
           // this.firstLoaded = 0;
-
           let jumpTime = (Date.now() - messageContent.data.pushTime);
           if (jumpTime < messageContent.data.duration) { //如果歌曲已经播放完毕不要再加载
             messageContent.data.duration = messageContent.data.duration / 1000;
+            
             this.setData({
               currentSong: messageContent.data
             });
@@ -411,6 +438,8 @@ Page({
               });
             }
             this.setData({
+              currentTime: '0:00',
+              percent: 0.0,
               duration: this._formatTime(this.data.currentSong.duration)
             });
             this._createAudio();
@@ -711,13 +740,22 @@ Page({
     manage.epname = this.data.currentSong.album.name;
     manage.singer = this.data.currentSong.artist;
     manage.coverImgUrl = this.data.currentSong.pictureUrl;
-    if (this.data.currentSong.pushTime) {
-      let jumpTime = (Date.now() - this.data.currentSong.pushTime) / 1000;
-      manage.startTime = 0;
-      setTimeout(function () {
-        manage.seek(jumpTime + 0.3)
-      }, 300);
-    }
+    manage.startTime = 0;
+    // if (this.data.currentSong.pushTime) {
+      // let that = this;
+      // setTimeout(function () {
+      //   wx.showToast({
+      //     icon: 'none',
+      //     title: that.data.currentSong.name + that.data.currentSong.url
+      //   })
+      // }, 4000);
+
+      // let jumpTime = (Date.now() - this.data.currentSong.pushTime) / 1000;
+      // setTimeout(function () {
+      //   manage.seek(jumpTime +2)
+      // }, 2000);
+    // }
+    origin.globalData.backgroundManage.play();
     origin.globalData.backgroundManage = manage;
   },
   _musicEvent: function () {
@@ -758,20 +796,25 @@ Page({
       // wx.showToast({
       //   title: '我被停止了',
       // })
-      if (origin.globalData.backgroundManage.currentTime == undefined || origin.globalData.backgroundManage.currentTime < that.data.currentSong.duration) {
+      if (origin.globalData.backgroundManage.currentTime == undefined || origin.globalData.backgroundManage.currentTime < origin.globalData.backgroundManage.duration) {
         origin.globalData.backgroundManage.src = that.data.currentSong.url;
         origin.globalData.backgroundManage.title = that.data.currentSong.name;
         origin.globalData.backgroundManage.epname = that.data.currentSong.album.name;
         origin.globalData.backgroundManage.singer = that.data.currentSong.artist;
         origin.globalData.backgroundManage.coverImgUrl = that.data.currentSong.pictureUrl;
-        origin.globalData.backgroundManage.startTime = 0
+        origin.globalData.backgroundManage.startTime = 0;
+        // wx.showToast({
+        //   title: '停止了',
+        // })
         if (that.data.currentSong.pushTime) {
           let jumpTime = (Date.now() - that.data.currentSong.pushTime) / 1000;
+          // origin.globalData.backgroundManage.startTime = jumpTime;
           setTimeout(function () {
-            origin.globalData.backgroundManage.seek(jumpTime + 0.3);
-            origin.globalData.backgroundManage.play();
-          }, 300);
+            // origin.globalData.backgroundManage.startTime = jumpTime +3;
+            origin.globalData.backgroundManage.seek(jumpTime +2);
+          }, 2000);
         }
+        origin.globalData.backgroundManage.play();
 
       }
       // console.log("我停止了", that.data.currentSong, origin.globalData.backgroundManage);
@@ -793,15 +836,26 @@ Page({
       // wx.showToast({
       //   title: '我完成跳转了',
       // })
-      console.log("监听背景音频完成跳转操作事件")
+      origin.globalData.backgroundManage.play();
+      console.log("监听背景音频完成跳转操作事件");
     })
     // 监听播放拿取播放进度
     origin.globalData.backgroundManage.onTimeUpdate(() => {
       const currentTime = origin.globalData.backgroundManage.currentTime;
-      // if(this.data.showHouses || this.data.showSearchMusic || this.data.showForAudit || this.data.showAddHouse || this.data.showSearchMusicList || this.data.showSearchMusicUser){
-      //   return;
+      // if (!that.data.jumped && that.data.currentSong.pushTime && that.data.currentSong.pushTime != undefined) {
+      //   setTimeout(function () {
+      //     wx.showToast({
+      //       icon: 'none',
+      //       title: '调用了timeupdate',
+      //     })
+      //   }, 5000);
+      //   let jumpTime = (Date.now() - that.data.currentSong.pushTime) / 1000;
+      //   origin.globalData.backgroundManage.seek(jumpTime);
+      //   origin.globalData.backgroundManage.play();
+      //   that.setData({
+      //     jumped: true
+      //   });
       // }
-      // console.log(currentTime,this.data.currentSong.duration,currentTime / this.data.currentSong.duration);
       that.setData({
         currentTime: that._formatTime(currentTime),
         percent: currentTime / that.data.currentSong.duration
@@ -921,6 +975,14 @@ Page({
     return ret
   },
   togglePlaying: function () {
+    if(this.data.currentSong.pushTime && this.data.currentSong.pushTime != undefined){
+      let jumpTime = (Date.now() - this.data.currentSong.pushTime) / 1000;
+      if(jumpTime > (origin.globalData.backgroundManage.currentTime+2)){
+        origin.globalData.backgroundManage.seek(jumpTime);
+        origin.globalData.backgroundManage.play();
+        return;
+      }
+    }
     if (origin.globalData.backgroundManage.paused) {
       origin.globalData.backgroundManage.play();
     } else {
@@ -938,7 +1000,7 @@ Page({
     // })
   },
   openList: function () {
-    console.log("songlist", this.data.songslist);
+    // console.log("songlist", this.data.songslist);
     if (!this.data.songslist.length) {
       return
     }
@@ -970,7 +1032,7 @@ Page({
   playthis: function (e) {
     const id = e.currentTarget.dataset.id;
     const index = e.currentTarget.dataset.index;
-    if(index != 0){
+    if (index != 0) {
       this.sendMsg('/music/good/' + id, null);
     }
     // const index = e.currentTarget.dataset.index
@@ -978,14 +1040,14 @@ Page({
     // this._init()
     // this.close()
   },
-  copyId: function(e){
+  copyId: function (e) {
     let song = e.currentTarget.dataset.data;
     wx.setClipboardData({
       data: song.id,
       success: function (res) {
-　　　　　//复制成功的操作
+        //复制成功的操作
         wx.showToast({
-          icon:'none',
+          icon: 'none',
           title: '已复制（歌曲|歌单）id'
         })
       }
@@ -1357,17 +1419,17 @@ Page({
   deletePick: function (e) {
     let song = e.currentTarget.dataset.data;
     let index = e.currentTarget.dataset.index;
-    if(index == 0){
+    if (index == 0) {
       wx.setClipboardData({
         data: song.id,
         success: function (res) {
-  　　　　　//复制成功的操作
+          //复制成功的操作
           wx.showToast({
             title: '已复制该歌曲id'
           })
         }
       });
-    }else{
+    } else {
       console.log(song);
       wx.showModal({
         content: '删除歌曲：' + song.name,
@@ -1891,7 +1953,7 @@ Page({
       showSearchMusicList: false,
       showSearchMusicUser: false,
       showTalkMsg: false,
-      showManual:false
+      showManual: false
     });
     origin.closeSocket();
   },
@@ -1983,7 +2045,7 @@ Page({
   //聊天消息始终显示最底端
 
   bottom: function () {
-    console.log("我跳转了");
+    // console.log("我跳转了");
     this.setData({
       toMsgView: 'msg-' + (this.data.newslist.length - 1)
     })
@@ -2012,9 +2074,9 @@ Page({
     this.setData({
       showTalkMsg: true
     })
-    setTimeout(function(){
+    setTimeout(function () {
       that.bottom();
-    },555);
+    }, 555);
   },
   closetalk: function () {
     this.setData({
@@ -2052,16 +2114,16 @@ Page({
       this.settingName(this.data.userInfo.nickName);
     }
   },
-  manual:function(e){
+  manual: function (e) {
     this.setData({
-      showTalkMsg:false,
-      showManual:true
+      showTalkMsg: false,
+      showManual: true
     })
   },
-  closeManual:function(){
+  closeManual: function () {
     this.setData({
-      showTalkMsg : true,
-      showManual:false
+      showTalkMsg: true,
+      showManual: false
     })
     this.bottom();
   }

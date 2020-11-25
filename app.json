@@ -1,6 +1,7 @@
 {
   "pages": [
-    "pages/player/player"
+    "pages/player/player",
+    "pages/logs/logs"
   ],
   "window": {
     "backgroundTextStyle": "dark",

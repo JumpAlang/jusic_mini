@@ -100,6 +100,18 @@ App({
 		});
 	},
 	sendArrayMsg: function (msg) {
+		if(this.scope.data.disabled){
+			wx.showModal({
+				content: '连接已断开，是否重新连接',
+				confirmText: '确定',
+				success: (res) => {
+					if (res.confirm) {
+						this.reconnect();
+					}
+				}
+			})
+			return;
+		}
 		let msgs = new Array();
 		msgs.push(msg);
 		console.log(JSON.stringify(msgs));

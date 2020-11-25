@@ -13,7 +13,7 @@ Component({
   data: {
     article: {
       id: 1,
-      title: '你有多久没听到家乡青山湾的声音',
+      title: '我的灵魂自习室之青山湾',
       author: '灵魂自习室',
       post_date: '2019-01-10',
       content: [
@@ -27,7 +27,7 @@ Component({
             name: 'img',
             attrs: {
               class: 'img_class',
-              src: 'https://alang-srt.oss-cn-beijing.aliyuncs.com/home2.jpg'
+              src: 'https://alang-srt.oss-cn-beijing.aliyuncs.com/home3.jpg'
             }
           }]
         },
@@ -38,7 +38,7 @@ Component({
           },
           children: [{
             type: 'text',
-            text: '青山湾的夏天'
+            text: '青山湾的声音'
           }]
         }, 
         {
